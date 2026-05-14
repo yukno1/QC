@@ -1,7 +1,7 @@
 import tensor
 import numpy as np
 import state
-from typing import Union
+from typing import Union, List
 
 
 class Operator(tensor.Tensor):
@@ -59,3 +59,36 @@ def Identity(d: int = 1) -> Operator:
 
 def PauliX(d: int = 1) -> Operator:
     return Operator([[0.0, 1.0], [1.0, 0.0]], "X").kpow(d)
+
+
+def PauliY(d: int = 1) -> Operator:
+    return Operator([[0.0, -1.0j], [1.0j, 0.0]], "Y").kpow(d)
+
+
+def PauliZ(d: int = 1) -> Operator:
+    return Operator([[1.0, 0.0], [0.0, -1.0]], "Z").kpow(d)
+
+
+def Rotation(vparm: List[float], theta: float, name: str = None) -> Operator:
+    """Produce the single-qubit rotation operator."""
+    v = np.asarray(vparm)
+    ...
+    return Operator(
+        np.cos(theta / 2) * Identity()
+        - 1j
+        * np.sin(theta / 2)
+        * (v[0] * PauliX() + v[1] * PauliY() + v[2] * PauliZ()),
+        name,
+    )
+
+
+def RotationX(theta: float) -> Operator:
+    return Rotation([1.0, 0.0, 0.0], theta, "Rx")
+
+
+def RotationY(theta: float) -> Operator:
+    return Rotation([0.0, 1.0, 0.0], theta, "Ry")
+
+
+def RotationZ(theta: float) -> Operator:
+    return Rotation([0.0, 0.0, 1.0], theta, "Rz")

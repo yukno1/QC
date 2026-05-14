@@ -1,6 +1,6 @@
-from typing import List, Iterable
-
+from typing import List, Iterable, Tuple
 import itertools
+import numpy as np
 
 
 def bits2val(bits: List[int]) -> int:
@@ -29,3 +29,12 @@ def frac2bits(val: float, nbits: int):
         res.append(int(val))
         val -= int(val)
     return res
+
+
+def density_to_cartesian(rho: np.ndarray) -> Tuple[float, float, float]:
+    a = rho[0, 0]
+    c = rho[1, 0]
+    x = 2.0 * c.real
+    y = 2.0 * c.imag
+    z = 2.0 * a - 1.0
+    return np.real(x), np.real(y), np.real(z)
