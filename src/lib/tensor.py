@@ -9,10 +9,15 @@ flags.DEFINE_integer("tensor_width", 64, "Width of complex (64, 128")
 
 
 def tensor_width():
-    return flags.FLAGS.tensor_width
+    """Return global floating point bit width"""
+    try:
+        return flags.FLAGS.tensor_width
+    except:
+        return 64
 
 
 def tensor_type():
+    """Return complex type based on command-line flag."""
     assert tensor_width() == 64 or tensor_width() == 128
     return np.complex64 if tensor_width() == 64 else np.complex128
 
@@ -21,7 +26,7 @@ class Tensor(np.ndarray):
 
     def __new__(cls, input_array, op_name=None) -> T:
         cls.name = op_name
-        return Tensor(np.ndarray(input_array, dtype=tensor_type()).view(cls))
+        return np.asarray(input_array, dtype=tensor_type()).view(cls)
 
     def __array_finalize__(self, obj) -> None:
         if obj is None:

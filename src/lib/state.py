@@ -1,11 +1,13 @@
+# pylint: disable=invalid-name
+
 import math
 import cmath
 import random
-
 import numpy as np
 from typing import Optional, List
-import helper
-import tensor
+
+from src.lib import helper
+from src.lib import tensor
 
 
 class State(tensor.Tensor):
@@ -25,7 +27,7 @@ class State(tensor.Tensor):
         return maxbits, maxprob
 
     def normalize(self):
-        dprod = np.conj(self) @ self
+        dprod = State(np.conj(self) @ self)
         assert not dprod.is_close(0.0), "Normalizing to 0-probability state"
         self /= np.sqrt(np.real(dprod))  # modify in-place
         return self

@@ -6,5 +6,5 @@ dependencies = [
     "absl-py>=2.4.0",
     "black>=26.3.1",
     "numpy>=2.4.4",
-    "ruff>=0.15.12",
+    "ruff==0.15.13",
 ]
